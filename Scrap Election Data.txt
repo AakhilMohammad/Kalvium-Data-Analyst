@@ -32,27 +32,27 @@ insights = []
 
 # Insight 1: Total seats won by BJP
 bjp_seats = results_df[results_df['Party'] == 'Bharatiya Janata Party (BJP)']['Seats'].sum()
-insights.append(f"BJP secured {bjp_seats} out of 543 seats.")
+insights.append(f"The Bharatiya Janata Party (BJP) secured {bjp_seats} out of 543 seats, showcasing their stronghold in the elections.")
 
 # Insight 2: Total seats won by INC
 inc_seats = results_df[results_df['Party'] == 'Indian National Congress (INC)']['Seats'].sum()
-insights.append(f"INC won {inc_seats} seats, continuing its role as the principal opposition party.")
+insights.append(f"The Indian National Congress (INC) won {inc_seats} seats, continuing its role as the principal opposition party.")
 
 # Insight 3: Regional Parties' Impact
 regional_parties = results_df[results_df['Party'].isin(['Samajwadi Party (SP)', 'All India Trinamool Congress (AITC)', 'Dravida Munnetra Kazhagam (DMK)'])]
-insights.append(f"Regional parties like SP, AITC, and DMK won {regional_parties['Seats'].sum()} seats collectively.")
+insights.append(f"Regional parties like the Samajwadi Party (SP), All India Trinamool Congress (AITC), and Dravida Munnetra Kazhagam (DMK) collectively won {regional_parties['Seats'].sum()} seats, highlighting their significant influence in local politics.")
 
 # Insight 4: Performance of JD(U), SHSUBT, and NCPSP
 smaller_parties = results_df[results_df['Party'].isin(['Janata Dal (United) [JD(U)]', 'Shiv Sena (Uddhav Balasaheb Thackeray) [SHSUBT]', 'Nationalist Congress Party – Sharadchandra Pawar [NCPSP]'])]
-insights.append(f"Parties like JD(U), SHSUBT, and NCPSP won {smaller_parties['Seats'].sum()} seats respectively, reflecting a fragmented political landscape.")
+insights.append(f"Parties like Janata Dal (United) [JD(U)], Shiv Sena (Uddhav Balasaheb Thackeray) [SHSUBT], and Nationalist Congress Party – Sharadchandra Pawar [NCPSP] won {smaller_parties['Seats'].sum()} seats respectively, reflecting a diverse and fragmented political landscape.")
 
 # Insight 5: Low Performance by Left Parties
 left_parties = results_df[results_df['Party'].isin(['Communist Party of India (Marxist) [CPI(M)]', 'Communist Party of India [CPI]'])]
-insights.append(f"Left parties like CPI(M) and CPI managed to secure only {left_parties['Seats'].sum()} seats respectively, continuing their decline.")
+insights.append(f"Left parties like the Communist Party of India (Marxist) [CPI(M)] and Communist Party of India [CPI] managed to secure only {left_parties['Seats'].sum()} seats respectively, continuing their decline in influence.")
 
 # Insight 6: New Entrants and Independent Candidates
 new_parties = results_df[results_df['Party'].isin(['Bharat Adivasi Party (BHRTADVSIP)', 'Voice of the People Party (VOTPP)', 'Independent (IND)'])]
-insights.append(f"The election saw a few new entrants and independent candidates winning {new_parties['Seats'].sum()} seats collectively.")
+insights.append(f"The election saw a few new entrants and independent candidates winning {new_parties['Seats'].sum()} seats collectively, indicating a shift in voter preferences.")
 
 # Insight 7: BJP's Stronghold in Assembly Bye Elections
 bye_elections = {
@@ -62,7 +62,7 @@ bye_elections = {
     # Add more constituencies as needed
 }
 bjp_bye_election_wins = sum(1 for result in bye_elections.values() if result == "Bharatiya Janata Party")
-insights.append(f"BJP performed well in bye-elections, winning {bjp_bye_election_wins} constituencies.")
+insights.append(f"The BJP performed well in bye-elections, winning {bjp_bye_election_wins} constituencies, further solidifying their position.")
 
 # Insight 8: State-wise Performance
 state_wise_performance = {
@@ -70,18 +70,18 @@ state_wise_performance = {
     "Telangana": {"TRS": 9},
     # Add more states as needed
 }
-insights.append(f"In states like Andhra Pradesh and Telangana, regional parties maintained significant presence.")
+insights.append(f"In states like Andhra Pradesh and Telangana, regional parties maintained a significant presence, demonstrating their strong local support.")
 
 # Insight 9: Voter Sentiment Shift
 voter_sentiment_shift = {
     "West Bengal": {"All India Trinamool Congress (AITC)": 29},
     "Tamil Nadu": {"Dravida Munnetra Kazhagam (DMK)": 22},
 }
-insights.append(f"Election results indicate a shift in voter sentiment towards regional parties in states like West Bengal and Tamil Nadu.")
+insights.append(f"Election results indicate a shift in voter sentiment towards regional parties in states like West Bengal and Tamil Nadu, reflecting regional priorities.")
 
 # Insight 10: Total Seats Won by Independent Candidates
 independent_seats = results_df[results_df['Party'] == 'Independent (IND)']['Seats'].sum()
-insights.append(f"Independent candidates won {independent_seats} seats in total.")
+insights.append(f"Independent candidates won {independent_seats} seats in total, highlighting the electorate's desire for independent voices in governance.")
 
 # Save insights to a file
 with open('election_insights.txt', 'w') as file:
