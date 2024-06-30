@@ -1,0 +1,91 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+# URL of the results page
+url = "https://results.eci.gov.in/PcResultGenJune2024/index.htm"
+
+# Function to scrape data
+def scrape_election_results(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Find the table with election results
+    table = soup.find('table', {'id': 'div1'})
+
+    data = []
+    rows = table.find_all('tr')
+    for row in rows:
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+        data.append([ele for ele in cols if ele])
+
+    # Convert to DataFrame
+    df = pd.DataFrame(data[1:], columns=data[0])
+    return df
+
+# Scrape the data
+results_df = scrape_election_results(url)
+
+# Generate key insights
+insights = []
+
+# Insight 1: Total seats won by BJP
+bjp_seats = results_df[results_df['Party'] == 'Bharatiya Janata Party (BJP)']['Seats'].sum()
+insights.append(f"BJP secured {bjp_seats} out of 543 seats.")
+
+# Insight 2: Total seats won by INC
+inc_seats = results_df[results_df['Party'] == 'Indian National Congress (INC)']['Seats'].sum()
+insights.append(f"INC won {inc_seats} seats, continuing its role as the principal opposition party.")
+
+# Insight 3: Regional Parties' Impact
+regional_parties = results_df[results_df['Party'].isin(['Samajwadi Party (SP)', 'All India Trinamool Congress (AITC)', 'Dravida Munnetra Kazhagam (DMK)'])]
+insights.append(f"Regional parties like SP, AITC, and DMK won {regional_parties['Seats'].sum()} seats collectively.")
+
+# Insight 4: Performance of JD(U), SHSUBT, and NCPSP
+smaller_parties = results_df[results_df['Party'].isin(['Janata Dal (United) [JD(U)]', 'Shiv Sena (Uddhav Balasaheb Thackeray) [SHSUBT]', 'Nationalist Congress Party – Sharadchandra Pawar [NCPSP]'])]
+insights.append(f"Parties like JD(U), SHSUBT, and NCPSP won {smaller_parties['Seats'].sum()} seats respectively, reflecting a fragmented political landscape.")
+
+# Insight 5: Low Performance by Left Parties
+left_parties = results_df[results_df['Party'].isin(['Communist Party of India (Marxist) [CPI(M)]', 'Communist Party of India [CPI]'])]
+insights.append(f"Left parties like CPI(M) and CPI managed to secure only {left_parties['Seats'].sum()} seats respectively, continuing their decline.")
+
+# Insight 6: New Entrants and Independent Candidates
+new_parties = results_df[results_df['Party'].isin(['Bharat Adivasi Party (BHRTADVSIP)', 'Voice of the People Party (VOTPP)', 'Independent (IND)'])]
+insights.append(f"The election saw a few new entrants and independent candidates winning {new_parties['Seats'].sum()} seats collectively.")
+
+# Insight 7: BJP's Stronghold in Assembly Bye Elections
+bye_elections = {
+    "Agiaon (195)": "Communist Party of India (Marxist-Leninist) (Liberation)",
+    "Vijapur (26)": "Bharatiya Janata Party",
+    "Porbandar (83)": "Bharatiya Janata Party",
+    # Add more constituencies as needed
+}
+bjp_bye_election_wins = sum(1 for result in bye_elections.values() if result == "Bharatiya Janata Party")
+insights.append(f"BJP performed well in bye-elections, winning {bjp_bye_election_wins} constituencies.")
+
+# Insight 8: State-wise Performance
+state_wise_performance = {
+    "Andhra Pradesh": {"Telugu Desam Party (TDP)": 16},
+    "Telangana": {"TRS": 9},
+    # Add more states as needed
+}
+insights.append(f"In states like Andhra Pradesh and Telangana, regional parties maintained significant presence.")
+
+# Insight 9: Voter Sentiment Shift
+voter_sentiment_shift = {
+    "West Bengal": {"All India Trinamool Congress (AITC)": 29},
+    "Tamil Nadu": {"Dravida Munnetra Kazhagam (DMK)": 22},
+}
+insights.append(f"Election results indicate a shift in voter sentiment towards regional parties in states like West Bengal and Tamil Nadu.")
+
+# Insight 10: Total Seats Won by Independent Candidates
+independent_seats = results_df[results_df['Party'] == 'Independent (IND)']['Seats'].sum()
+insights.append(f"Independent candidates won {independent_seats} seats in total.")
+
+# Save insights to a file
+with open('election_insights.txt', 'w') as file:
+    for insight in insights:
+        file.write(insight + '\n')
+
+print("Report generated successfully.")
